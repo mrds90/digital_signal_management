@@ -218,9 +218,7 @@ int32_t {file_upper}_Filter(int32_t input);
     int32_t temp_result[{max_temp_result_size}] = {{0}};
 
     /* Shift values in the input buffer */
-    for (int i = NUM_SIZE - 1; i > 0; --i) {{
-        input_buffer[i] = input_buffer[i - 1];
-    }}
+    memmove(&input_buffer[1], &input_buffer[0], (NUM_SIZE - 1) * sizeof(int32_t));
     input_buffer[0] = input;
 
     /* Calculate the numerator part */
@@ -237,9 +235,7 @@ int32_t {file_upper}_Filter(int32_t input);
         if den_size > 1:
             function_code += f"""
     /* Shift values in the output buffer */
-    for (int i = DEN_SIZE - 2; i > 0; --i) {{
-        output_buffer[i] = output_buffer[i - 1];
-    }}
+    memmove(&output_buffer[1], &output_buffer[0], (DEN_SIZE - 2) * sizeof(int32_t));
     output_buffer[0] = output;
     """
         function_code += f"""
